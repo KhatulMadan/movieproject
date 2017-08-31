@@ -1,9 +1,0 @@
-com/boris/movieproject/app/AppLoader.class
-com/boris/movieproject/entity/ChildrenTvShows.class
-com/boris/movieproject/entity/Movies.class
-com/boris/movieproject/entity/ChildrenMovies.class
-com/boris/movieproject/entity/TvShows.class
-com/boris/movieproject/app/AppController.class
-com/boris/movieproject/service/FileService.class
-com/boris/movieproject/service/InfoService.class
-com/boris/movieproject/service/DownloadService.class
