@@ -152,4 +152,25 @@ public class ChildrenMovies extends Movie {
     public void setPoster(String poster) {
         this.poster = poster;
     }
+
+    public void setDetails(String title,
+                                    int runtime,
+                                    String genre,
+                                    String release_date,
+                                    String written,
+                                    String director,
+                                    String cast,
+                                    String description,
+                                    String poster)
+    {
+        this.title = title;
+        this.runtime = runtime;
+        this.genre = genre;
+        this.release_date = release_date;
+        this.written = written;
+        this.director = director;
+        this.cast = cast;
+        this.description = description;
+        this.poster = poster;
+    }
 }

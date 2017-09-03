@@ -3,7 +3,6 @@ package com.boris.movieproject.service;
 import com.boris.movieproject.config.AppConfig;
 import com.boris.movieproject.entity.Movie;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -38,6 +37,9 @@ public class CronManager {
     @Autowired
     private MovieFactory movieFactory;
 
+    @Autowired
+    private DownloadService download;
+
 
 
 
@@ -65,28 +67,19 @@ public class CronManager {
 
 
             String title = results.get(i);
-            movie.setTitle(title);
             int movieID = service.getID(title);
             String details = service.getDetails(movieID);
             String credits = service.getCredits(movieID);
             int runtime = service.getRuntime(details);
-            movie.setRuntime(runtime);
             String genre = service.getGenre(details);
-            movie.setGenre(genre);
             String release = service.getReleaseDate(details);
-            movie.setRelease_date(release);
             String overview = service.getOverview(details);
-            movie.setDescription(overview);
             String filepath = service.getBackdropPath(details);
-            movie.setPoster(filepath);
-            DownloadService download = new DownloadService();
-            download.downloadFile(filepath);
             String director = service.getDirector(credits);
-            movie.setDirector(director);
             String writers = service.getWriter(credits);
-            movie.setWritten(writers);
             String actors = service.getCast(credits);
-            movie.setCast(actors);
+            movie.setDetails(title, runtime, genre, release, writers, director, actors, overview, filepath);
+            download.downloadFile(filepath);
             dbService.add(movie);
 
 

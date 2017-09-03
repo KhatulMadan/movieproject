@@ -5,6 +5,15 @@ package com.boris.movieproject.entity;
  */
 public abstract class Movie {
 
+    public abstract void setDetails(String title,
+                                    int runtime,
+                                    String genre,
+                                    String release_date,
+                                    String written,
+                                    String director,
+                                    String cast,
+                                    String description,
+                                    String poster);
     public abstract void setTitle(String title);
     public abstract void setRuntime(int runtime);
     public abstract void setGenre(String genre);

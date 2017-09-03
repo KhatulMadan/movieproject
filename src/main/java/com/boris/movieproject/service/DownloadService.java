@@ -1,5 +1,7 @@
 package com.boris.movieproject.service;
 
+import org.springframework.stereotype.Component;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -12,6 +14,7 @@ import java.net.URL;
  * This class is used to download posters as jpg files from MoviesDataBase web site
  */
 
+@Component
 public class DownloadService {
 
     private static final int BUFFER_SIZE = 4096;
