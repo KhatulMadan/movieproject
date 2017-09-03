@@ -3,9 +3,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>directory</title>
+    <title>Movie Microservice</title>
 </head>
 <body>
-    directory ${name}
+    Checking folder ${name}
 </body>
 </html>

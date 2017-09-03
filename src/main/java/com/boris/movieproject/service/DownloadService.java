@@ -11,6 +11,7 @@ import java.net.URL;
  * Created by boris on 30.08.17.
  * This class is used to download posters as jpg files from MoviesDataBase web site
  */
+
 public class DownloadService {
 
     private static final int BUFFER_SIZE = 4096;
@@ -26,7 +27,9 @@ public class DownloadService {
      */
     public static void downloadFile(String fileURL)
             throws IOException {
-        String fullURL = basicUrl+fileURL;
+
+        String fullURL = basicUrl+fileURL.substring(1, fileURL.length()-1);
+        System.out.println(fullURL);
         URL url = new URL(fullURL);
         HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
         int responseCode = httpConn.getResponseCode();
@@ -48,10 +51,10 @@ public class DownloadService {
             } else {
                 // extracts file name from URL
                 fileName = fileURL.substring(fileURL.lastIndexOf("/") + 1,
-                        fileURL.length());
+                        fileURL.length()-1);
             }
 
-            System.out.println("Content-Type = " + contentType);
+            System.out.println("Content-type = " + contentType);
             System.out.println("Content-Disposition = " + disposition);
             System.out.println("Content-Length = " + contentLength);
             System.out.println("fileName = " + fileName);

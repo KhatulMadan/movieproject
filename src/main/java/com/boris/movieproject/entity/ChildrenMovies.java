@@ -4,12 +4,20 @@ package com.boris.movieproject.entity;
  * Created by boris on 30.08.17.
  */
 
-import javax.persistence.*;
+
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 
 
 @Entity
 @Table(name = "childrenmovies")
-public class ChildrenMovies {
+public class ChildrenMovies extends Movie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
