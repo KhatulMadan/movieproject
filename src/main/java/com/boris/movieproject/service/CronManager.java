@@ -74,73 +74,37 @@ public class CronManager {
 
             String title = results.get(i);
 
-            System.out.println("You have choosed movie: " + title);
-
 
             int movieID = service.getID(title);
-            System.out.println("movie ID: " + movieID);
-
+          
             String details = service.getDetails(movieID);
-            System.out.println("Full details: " + details);
-
+          
             String credits = service.getCredits(movieID);
-            System.out.println("Json credits: " + credits);
-
+          
             int runtime = service.getRuntime(details);
-
-            System.out.println("Runtime: " + runtime);
-
 
             String genre = service.getGenre(details);
 
-
-            System.out.println("Genre: " + genre);
-
-
             String release = service.getReleaseDate(details);
-
-
-            System.out.println("release date: " + release);
-
 
             String overview = service.getOverview(details);
 
-
-            System.out.println("overview: " + overview);
-
-
             String filepath = service.getBackdropPath(details);
 
-
-            System.out.println("Link to poster: " + filepath);
-
-
-
-
-
             String director = service.getDirector(credits);
-
-
-            System.out.println("Director: " + director);
 
 
             String writers = service.getWriter(credits);
 
 
-            System.out.println("Written by: " + writers);
-
 
             String actors = service.getCast(credits);
 
 
-            System.out.println("Starring: " + actors);
-
             movie.setDetails(title, runtime, genre, release, writers, director, actors, overview, filepath);
-
 
             download.downloadFile(filepath);
 
-       
              dbService.add(movie);
 
 
