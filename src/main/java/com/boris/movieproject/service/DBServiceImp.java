@@ -9,7 +9,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by boris on 31.08.17.
+ *
+ * /**
+ * Created by boris on 31.08.17.
+ *
+ * Service class responsible for performing Movie object operations.
  */
+
+
 @Service
 @Transactional
 public class DBServiceImp implements DBService {

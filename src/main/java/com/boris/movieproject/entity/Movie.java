@@ -2,6 +2,10 @@ package com.boris.movieproject.entity;
 
 /**
  * Created by boris on 03.09.17.
+ *
+ * Abstract class Movie.
+ * All the movies from the directories (ChildrenMovies, Movies, TvShows, ChildrenTvShows) extend this class.
+ *
  */
 public abstract class Movie {
 

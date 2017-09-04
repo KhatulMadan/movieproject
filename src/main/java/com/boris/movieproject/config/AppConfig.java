@@ -15,7 +15,10 @@ import java.util.Properties;
 
 /**
  * Created by boris on 31.08.17.
+ * Spring configuration class.
+ *
  */
+
 @Configuration
 @PropertySource("classpath:application.properties")
 @EnableTransactionManagement

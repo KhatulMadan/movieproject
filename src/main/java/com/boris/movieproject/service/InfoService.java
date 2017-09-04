@@ -1,13 +1,15 @@
 package com.boris.movieproject.service;
 
 import com.google.gson.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 /**
  * Created by boris on 30.08.17.
- * This class is responsible for getting the data from MovieDataBase website
+ *
+ * Service class fetching the data from MovieDataBase website
  */
 
 @Service
@@ -19,6 +21,13 @@ public class InfoService {
      * @param title is the name of the movie that we want to get the details about;
      * @return movie ID as integer;
      */
+
+    @Value("${API_KEY}")
+    private String myAPI;
+
+    private final String basicURL = "https://api.themoviedb.org/3/search/movie?api_key=%s&query=%s";
+    private final String detailsQueryURL = "https://api.themoviedb.org/3/movie/%s?api_key=%s";
+    private final String creditsQueryURL = "https://api.themoviedb.org/3/movie/%s/credits?api_key=%s";
 
     public int getID(String title){
 
@@ -33,12 +42,16 @@ public class InfoService {
         {
             newTitle = title;
         }
-        String URL = "https://api.themoviedb.org/3/search/movie?api_key=21e9b47319e6cc5ae141b807eaa6c479&query=" + newTitle;
+        String getURL=String.format(basicURL, myAPI, newTitle);
+
+        //
+        System.out.println(getURL);
+
         RestTemplate restTemplate = new RestTemplate();
 
 
         int ID = 0;
-        JsonObject obj = new JsonParser().parse(restTemplate.getForObject(URL, String.class)).getAsJsonObject();
+        JsonObject obj = new JsonParser().parse(restTemplate.getForObject(getURL, String.class)).getAsJsonObject();
         JsonArray jarray = obj.getAsJsonArray("results");
 
         for (JsonElement j : jarray) {
@@ -65,9 +78,13 @@ public class InfoService {
     public String getDetails(int ID)
     {
 
-        String newURL = "https://api.themoviedb.org/3/movie/"+ID+"?api_key=21e9b47319e6cc5ae141b807eaa6c479";
+        String getURL=String.format(detailsQueryURL, ID, myAPI);
+
+        //
+        System.out.println(getURL);
+
         RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.getForObject(newURL, String.class);
+        return restTemplate.getForObject(getURL, String.class);
 
     }
 
@@ -80,9 +97,13 @@ public class InfoService {
      */
 
     public String getCredits(int ID){
-        String URL = "https://api.themoviedb.org/3/movie/"+ID+"/credits?api_key=21e9b47319e6cc5ae141b807eaa6c479";
+        String getURL=String.format(creditsQueryURL, ID, myAPI);
+
+        //
+        System.out.println(getURL);
+
         RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.getForObject(URL, String.class);
+        return restTemplate.getForObject(getURL, String.class);
 
     }
 

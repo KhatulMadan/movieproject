@@ -11,7 +11,8 @@ import java.net.URL;
 
 /**
  * Created by boris on 30.08.17.
- * This class is used to download posters as jpg files from MoviesDataBase web site
+ *
+ * Service class to download backdrops as jpg files from MoviesDataBase web site.
  */
 
 @Component

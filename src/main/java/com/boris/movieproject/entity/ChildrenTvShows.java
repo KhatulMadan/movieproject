@@ -4,6 +4,10 @@ import javax.persistence.*;
 
 /**
  * Created by boris on 30.08.17.
+ *
+ * Entity class for ChildrenTvShows
+ * All the information about downloaded movies from directory ChildrenTvShows is saved to it's own table.
+ *
  */
 
 

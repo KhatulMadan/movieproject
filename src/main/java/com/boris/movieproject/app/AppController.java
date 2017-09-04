@@ -5,11 +5,9 @@ package com.boris.movieproject.app;
  * Application controller that reads request from the user
  */
 
-import com.boris.movieproject.config.AppConfig;
-import com.boris.movieproject.entity.MovieInterface;
+
 import com.boris.movieproject.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
@@ -17,10 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.io.IOException;
-import java.util.List;
-
-import java.sql.SQLException;
 
 
 @Controller
@@ -43,7 +37,13 @@ public class AppController {
     @Autowired
     private DirectoryHolder directories;
 
+    @Autowired
+    private DownloadService download;
 
+    /**
+     * @param name is the name of the directory with downloaded movies as a string.
+     * The method adds directory to the list of directories to be processed.
+     */
 
     @RequestMapping("/directory")
     public void getRequest(Model model, @RequestParam(value = "name", required = false, defaultValue = "all movies") String name)  {

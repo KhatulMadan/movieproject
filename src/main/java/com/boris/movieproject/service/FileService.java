@@ -11,7 +11,8 @@ import org.apache.commons.io.FilenameUtils;
 
 /**
  * Created by boris on 30.08.17.
- * FileService class works with the downloaded movie files.
+ *
+ * Service class providing the names of downloaded movie files.
  */
 
 @Service

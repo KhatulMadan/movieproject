@@ -2,6 +2,10 @@ package com.boris.movieproject.entity;
 
 /**
  * Created by boris on 30.08.17.
+ *
+ * Entity class for ChildrenMovies
+ * All the information about downloaded movies from directory ChildrenMovies is saved to it's own table.
+ *
  */
 
 

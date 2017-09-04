@@ -2,6 +2,10 @@ package com.boris.movieproject.entity;
 
 /**
  * Created by boris on 30.08.17.
+ *
+ * Entity class for TvShows
+ * All the information about downloaded movies from directory TvShows is saved to it's own table.
+ *
  */
 
 import javax.persistence.*;
