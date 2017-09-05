@@ -30,7 +30,7 @@ public class CronManager {
     private DBService dbService;
 
     @Autowired
-    private InfoService service;
+    private InfoService infoService;
 
     @Autowired
     private DirectoryHolder directories;
@@ -40,7 +40,7 @@ public class CronManager {
     private MovieFactory movieFactory;
 
     @Autowired
-    private DownloadService download;
+    private DownloadService downloadService;
 
 
     /**
@@ -57,15 +57,11 @@ public class CronManager {
         for (String d : directories.getDirectories()) {
 
 
-            Movie movie = movieFactory.getMovie(d.toUpperCase());
-
 
             List<String> results = fileService.getMovies(d);
-
-
-        AnnotationConfigApplicationContext context =
+            AnnotationConfigApplicationContext context =
                 new AnnotationConfigApplicationContext(AppConfig.class);
-        dbService = context.getBean(DBService.class);
+            dbService = context.getBean(DBService.class);
 
 
 
@@ -73,40 +69,11 @@ public class CronManager {
 
 
             String title = results.get(i);
-
-
-            int movieID = service.getID(title);
-          
-            String details = service.getDetails(movieID);
-          
-            String credits = service.getCredits(movieID);
-          
-            int runtime = service.getRuntime(details);
-
-            String genre = service.getGenre(details);
-
-            String release = service.getReleaseDate(details);
-
-            String overview = service.getOverview(details);
-
-            String filepath = service.getBackdropPath(details);
-
-            String director = service.getDirector(credits);
-
-
-            String writers = service.getWriter(credits);
-
-
-
-            String actors = service.getCast(credits);
-
-
-            movie.setDetails(title, runtime, genre, release, writers, director, actors, overview, filepath);
-
-            download.downloadFile(filepath);
-
-             dbService.add(movie);
-
+            Movie movie = movieFactory.getMovie(d.toUpperCase());
+            movie = infoService.getFullDetails(movie, title);
+            String filepath = movie.getPoster();
+            downloadService.downloadFile(filepath);
+            dbService.add(movie);
 
         }
 

@@ -12,10 +12,7 @@ import com.boris.movieproject.entity.*;
 
 public interface Dao {
 
-    void add(ChildrenMovies movie);
-    void add(Movies movie);
-    void add(TvShows movie);
-    void add(ChildrenTvShows movie);
+  void add (Movie movie);
 
 
 }

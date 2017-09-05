@@ -28,29 +28,7 @@ public class DBServiceImp implements DBService {
     @Override
     public void add (Movie movie) {
 
-        if (movie instanceof ChildrenMovies)
-        {
-            ChildrenMovies childrenmovie = (ChildrenMovies) movie;
-            myDao.add(childrenmovie);
-        }
-
-        else if (movie instanceof Movies)
-        {
-            Movies movies = (Movies) movie;
-            myDao.add(movies);
-        }
-
-        else if (movie instanceof TvShows)
-        {
-            TvShows show = (TvShows) movie;
-            myDao.add(show);
-        }
-
-        else if (movie instanceof ChildrenTvShows)
-        {
-            ChildrenTvShows show = (ChildrenTvShows) movie;
-            myDao.add(show);
-        }
+    myDao.add(movie);
 
 
     }

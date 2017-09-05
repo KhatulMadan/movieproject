@@ -46,9 +46,10 @@ public class AppController {
      */
 
     @RequestMapping("/directory")
-    public void getRequest(Model model, @RequestParam(value = "name", required = false, defaultValue = "all movies") String name)  {
+    public String getRequest(Model model, @RequestParam(value = "name", required = false, defaultValue = "all movies") String name)  {
         model.addAttribute("name", name);
         directories.addDirectory(name);
+        return "page";
 
     }
 }

@@ -47,11 +47,14 @@ public class DownloadService {
 
             if (disposition != null) {
                 // extracts file name from header field
+
                 int index = disposition.indexOf("filename=");
                 if (index > 0) {
                     fileName = disposition.substring(index + 10,
                             disposition.length() - 1);
                 }
+
+
             } else {
                 // extracts file name from URL
                 fileName = fileURL.substring(fileURL.lastIndexOf("/") + 1,

@@ -1,5 +1,6 @@
 package com.boris.movieproject.service;
 
+import com.boris.movieproject.entity.Movie;
 import com.google.gson.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -16,11 +17,7 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class InfoService {
 
-    /**
-     *
-     * @param title is the name of the movie that we want to get the details about;
-     * @return movie ID as integer;
-     */
+
 
     @Value("${API_KEY}")
     private String myAPI;
@@ -29,7 +26,19 @@ public class InfoService {
     private final String detailsQueryURL = "https://api.themoviedb.org/3/movie/%s?api_key=%s";
     private final String creditsQueryURL = "https://api.themoviedb.org/3/movie/%s/credits?api_key=%s";
 
-    public int getID(String title){
+    private int ID;
+    private String details;
+    private String credits;
+
+
+
+    /**
+     *
+     * @param title is the name of the movie that we want to get the details about;
+     * This method assigns variable ID;
+     */
+
+    private void setID(String title){
 
         String newTitle;
 
@@ -50,7 +59,6 @@ public class InfoService {
         RestTemplate restTemplate = new RestTemplate();
 
 
-        int ID = 0;
         JsonObject obj = new JsonParser().parse(restTemplate.getForObject(getURL, String.class)).getAsJsonObject();
         JsonArray jarray = obj.getAsJsonArray("results");
 
@@ -63,19 +71,18 @@ public class InfoService {
             }
         }
 
-        return ID;
 
     }
 
 
     /**
-     * Gets all the movie's details.
+     * Method saves all movie details in variable details;
      * @param ID is movie ID as integer;
-     * @return all the general details as a json string;
+     *
      */
 
 
-    public String getDetails(int ID)
+    private void setDetails(int ID)
     {
 
         String getURL=String.format(detailsQueryURL, ID, myAPI);
@@ -84,26 +91,27 @@ public class InfoService {
         System.out.println(getURL);
 
         RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.getForObject(getURL, String.class);
+        details = restTemplate.getForObject(getURL, String.class);
+
 
     }
 
 
 
     /**
-     *
+     * Method saves all movie credits in variable credits;
      * @param ID movie ID as Integer;
-     * @return credits as a json string;
+     *
      */
 
-    public String getCredits(int ID){
+    private void setCredits(int ID){
         String getURL=String.format(creditsQueryURL, ID, myAPI);
 
         //
         System.out.println(getURL);
 
         RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.getForObject(getURL, String.class);
+        credits = restTemplate.getForObject(getURL, String.class);
 
     }
 
@@ -113,10 +121,10 @@ public class InfoService {
      * @return runtime of the movie as an integer;
      */
 
-   public int getRuntime(String details)
+   private int getRuntime(String details)
    {
-       JsonObject obj = new JsonParser().parse(details).getAsJsonObject();
-       return obj.get("runtime").getAsInt();
+       JsonObject detailsObj = new JsonParser().parse(details).getAsJsonObject();
+       return detailsObj.get("runtime").getAsInt();
 
    }
 
@@ -126,11 +134,11 @@ public class InfoService {
      * @return release date of the movie as a string;
      */
 
-   public String getReleaseDate(String details)
+   private String getReleaseDate(String details)
    {
        String releaseDate;
-       JsonObject obj = new JsonParser().parse(details).getAsJsonObject();
-       JsonElement releaseDateObj = obj.get("release_date");
+       JsonObject detailsObj = new JsonParser().parse(details).getAsJsonObject();
+       JsonElement releaseDateObj = detailsObj.get("release_date");
 
        if (releaseDateObj == null) {
            releaseDate = "unknown";
@@ -151,11 +159,11 @@ public class InfoService {
      */
 
 
-   public String getBackdropPath(String details)
+   private String getBackdropPath(String details)
    {
        String downloadLink;
-       JsonObject obj = new JsonParser().parse(details).getAsJsonObject();
-       JsonElement backdropPath = obj.get("backdrop_path");
+       JsonObject detailsObj = new JsonParser().parse(details).getAsJsonObject();
+       JsonElement backdropPath = detailsObj.get("backdrop_path");
 
        if (backdropPath == null) {
            downloadLink = "no link available";
@@ -176,11 +184,11 @@ public class InfoService {
      * @return genre as a string;
      */
 
-   public String getGenre(String details)
+   private String getGenre(String details)
    {
-       JsonObject obj = new JsonParser().parse(details).getAsJsonObject();
-       JsonArray jarray = obj.getAsJsonArray("genres");
-       obj = jarray.get(0).getAsJsonObject();
+       JsonObject detailsObj = new JsonParser().parse(details).getAsJsonObject();
+       JsonArray jarray = detailsObj.getAsJsonArray("genres");
+       JsonObject obj = jarray.get(0).getAsJsonObject();
        return obj.get("name").getAsString();
 
    }
@@ -191,11 +199,11 @@ public class InfoService {
      * @return the short description of the plot as a string;
      */
 
-    public String getOverview(String details)
+    private String getOverview(String details)
     {
         String overview;
-        JsonObject obj = new JsonParser().parse(details).getAsJsonObject();
-        JsonElement overviewObj = obj.get("overview");
+        JsonObject detailsObj = new JsonParser().parse(details).getAsJsonObject();
+        JsonElement overviewObj = detailsObj.get("overview");
 
         if (overviewObj == null) {
             overview = "no ";
@@ -206,7 +214,7 @@ public class InfoService {
             overview = overviewObj.getAsString();
         }
 
-        return obj.get("overview").getAsString();
+        return detailsObj.get("overview").getAsString();
     }
 
     /**
@@ -216,23 +224,25 @@ public class InfoService {
      */
 
 
-   public String getDirector(String credits) {
-       String director = "";
+   private String getDirector(String credits) {
+       StringBuilder director = new StringBuilder();
+       String sep = ", ";
        JsonObject obj = new JsonParser().parse(credits).getAsJsonObject();
        JsonArray jarray = obj.getAsJsonArray("crew");
 
        for (JsonElement j : jarray) {
            JsonObject crewObj = j.getAsJsonObject();
-           String job = crewObj.get("job").toString();
-           String name = crewObj.get("name").toString();
-           director = name;
-           if (job.equals("director")) {
-               break;
+           String department = crewObj.get("department").getAsString();
+           String name = crewObj.get("name").getAsString();
+           if (department.equals("Directing")) {
+               director.append(name);
+               director.append(sep);
            }
        }
 
 
-       return director;
+       String name = director.toString();
+       return name.substring(0,name.length()-2);
 
    }
 
@@ -242,7 +252,7 @@ public class InfoService {
      * @return the names of the writers separated by "," as a string;
      */
 
-    public String getWriter(String credits) {
+    private String getWriter(String credits) {
         StringBuilder written = new StringBuilder();
         String sep = ", ";
         JsonObject obj = new JsonParser().parse(credits).getAsJsonObject();
@@ -259,7 +269,7 @@ public class InfoService {
             }
 
         String names = written.toString();
-        return names.substring(0,names.length()-1);
+        return names.substring(0,names.length()-2);
 
     }
 
@@ -269,7 +279,7 @@ public class InfoService {
      * @return the names of three mains actors separated by "," as a string;
      */
 
-    public String getCast(String credits){
+    private String getCast(String credits){
         StringBuilder starring = new StringBuilder();
         String sep = ", ";
         JsonObject obj = new JsonParser().parse(credits).getAsJsonObject();
@@ -285,7 +295,25 @@ public class InfoService {
         }
 
         String names = starring.toString();
-        return names.substring(0,names.length()-1);
+        return names.substring(0,names.length()-2);
+
+    }
+
+    /**
+     * @param movie is an empty movie object.
+     * @param title is the title of the movie.
+     * @return movie with all the values set.
+     */
+
+    public Movie getFullDetails(Movie movie, String title)
+    {
+        setID(title);
+        setDetails(ID);
+        setCredits(ID);
+        movie.setDetails(title,
+                getRuntime(details), getGenre(details), getReleaseDate(details),
+                getWriter(credits), getDirector(credits), getCast(credits), getOverview(details), getBackdropPath(details));
+        return movie;
 
     }
 

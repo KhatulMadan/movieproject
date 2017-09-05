@@ -20,4 +20,7 @@ public abstract class Movie {
                                     String poster);
 
 
+    public abstract String getPoster();
 }
+
+
