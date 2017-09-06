@@ -2,7 +2,10 @@ package com.boris.movieproject.service;
 
 import com.boris.movieproject.config.AppConfig;
 import com.boris.movieproject.entity.Movie;
+import com.boris.movieproject.factory.MovieFactory;
+import com.boris.movieproject.factory.MovieType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -37,10 +40,13 @@ public class CronManager {
 
 
     @Autowired
-    private MovieFactory movieFactory;
-
-    @Autowired
     private DownloadService downloadService;
+
+
+
+
+
+
 
 
     /**
@@ -52,13 +58,16 @@ public class CronManager {
 
 
     @Scheduled(cron = "0 */5 * ? * *")
-    public void cronTask() throws IOException {
+    public void cronTask() throws IOException, InstantiationException, IllegalAccessException {
 
         for (String d : directories.getDirectories()) {
 
 
 
             List<String> results = fileService.getMovies(d);
+            MovieType movieType = MovieType.valueOf(d.toUpperCase());
+            MovieFactory movieFactory = new MovieFactory();
+            Movie movie = movieFactory.getMovie(movieType);
             AnnotationConfigApplicationContext context =
                 new AnnotationConfigApplicationContext(AppConfig.class);
             dbService = context.getBean(DBService.class);
@@ -69,7 +78,6 @@ public class CronManager {
 
 
             String title = results.get(i);
-            Movie movie = movieFactory.getMovie(d.toUpperCase());
             movie = infoService.getFullDetails(movie, title);
             String filepath = movie.getPoster();
             downloadService.downloadFile(filepath);

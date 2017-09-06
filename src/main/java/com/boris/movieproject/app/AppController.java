@@ -8,6 +8,7 @@ package com.boris.movieproject.app;
 
 import com.boris.movieproject.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
@@ -39,6 +40,9 @@ public class AppController {
 
     @Autowired
     private DownloadService download;
+
+    @Autowired
+    private ApplicationContext appContext;
 
     /**
      * @param name is the name of the directory with downloaded movies as a string.
