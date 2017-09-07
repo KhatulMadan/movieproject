@@ -26,11 +26,6 @@ public class CronManager {
     @Autowired
     private CronManager myCron;
 
-    @Autowired
-    private FileService fileService;
-
-    @Autowired
-    private DBService dbService;
 
     @Autowired
     private InfoService infoService;
@@ -38,9 +33,8 @@ public class CronManager {
     @Autowired
     private DirectoryHolder directories;
 
-
     @Autowired
-    private DownloadService downloadService;
+    private FileService fileService;
 
 
 
@@ -62,29 +56,9 @@ public class CronManager {
 
         for (String d : directories.getDirectories()) {
 
-
-
             List<String> results = fileService.getMovies(d);
             MovieType movieType = MovieType.valueOf(d.toUpperCase());
-            MovieFactory movieFactory = new MovieFactory();
-            Movie movie = movieFactory.getMovie(movieType);
-            AnnotationConfigApplicationContext context =
-                new AnnotationConfigApplicationContext(AppConfig.class);
-            dbService = context.getBean(DBService.class);
-
-
-
-        for (int i = 0; i<results.size(); i++) {
-
-
-            String title = results.get(i);
-            movie = infoService.getFullDetails(movie, title);
-            String filepath = movie.getPoster();
-            downloadService.downloadFile(filepath);
-            dbService.add(movie);
-
-        }
-
+            infoService.saveMovies(results, movieType);
 
 
         }

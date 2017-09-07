@@ -1,11 +1,19 @@
 package com.boris.movieproject.service;
 
+import com.boris.movieproject.config.AppConfig;
 import com.boris.movieproject.entity.Movie;
+import com.boris.movieproject.factory.MovieFactory;
+import com.boris.movieproject.factory.MovieType;
 import com.google.gson.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by boris on 30.08.17.
@@ -17,6 +25,13 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class InfoService {
 
+    
+    @Autowired
+    private DBService dbService;
+
+
+    @Autowired
+    private DownloadService downloadService;
 
 
     @Value("${API_KEY}")
@@ -305,7 +320,7 @@ public class InfoService {
      * @return movie with all the values set.
      */
 
-    public Movie getFullDetails(Movie movie, String title)
+   private Movie getFullDetails(Movie movie, String title)
     {
         setID(title);
         setDetails(ID);
@@ -314,6 +329,27 @@ public class InfoService {
                 getRuntime(details), getGenre(details), getReleaseDate(details),
                 getWriter(credits), getDirector(credits), getCast(credits), getOverview(details), getBackdropPath(details));
         return movie;
+
+    }
+
+    public void saveMovies(List<String> results, MovieType movieType) throws InstantiationException, IllegalAccessException, IOException {
+
+        MovieFactory movieFactory = new MovieFactory();
+        Movie movie = movieFactory.getMovie(movieType);
+        AnnotationConfigApplicationContext context =
+                new AnnotationConfigApplicationContext(AppConfig.class);
+        dbService = context.getBean(DBService.class);
+
+
+        for (int i = 0; i<results.size(); i++) {
+
+            String title = results.get(i);
+            movie = getFullDetails(movie, title);
+            String filepath = movie.getPoster();
+            downloadService.downloadFile(filepath);
+            dbService.add(movie);
+
+        }
 
     }
 
