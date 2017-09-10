@@ -23,7 +23,7 @@ import java.util.List;
 
 @Service
 @Component
-public class InfoService {
+public class MovieInfoService {
 
     
     @Autowired
@@ -320,7 +320,7 @@ public class InfoService {
      * @return movie with all the values set.
      */
 
-   private Movie getFullDetails(Movie movie, String title)
+   public Movie getFullDetails(Movie movie, String title)
     {
         setID(title);
         setDetails(ID);

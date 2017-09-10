@@ -1,12 +1,7 @@
 package com.boris.movieproject.service;
 
-import com.boris.movieproject.config.AppConfig;
-import com.boris.movieproject.entity.Movie;
-import com.boris.movieproject.factory.MovieFactory;
 import com.boris.movieproject.factory.MovieType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +23,7 @@ public class CronManager {
 
 
     @Autowired
-    private InfoService infoService;
+    private MovieInfoService movieInfoService;
 
     @Autowired
     private DirectoryHolder directories;
@@ -58,7 +53,7 @@ public class CronManager {
 
             List<String> results = fileService.getMovies(d);
             MovieType movieType = MovieType.valueOf(d.toUpperCase());
-            infoService.saveMovies(results, movieType);
+            movieInfoService.saveMovies(results, movieType);
 
 
         }

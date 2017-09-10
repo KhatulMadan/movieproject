@@ -33,7 +33,7 @@ public class AppController {
     private DBService dbService;
 
     @Autowired
-    private InfoService service;
+    private MovieInfoService service;
 
     @Autowired
     private DirectoryHolder directories;
