@@ -35,7 +35,7 @@ Go to http://localhost:8191/directory?name= and provide directory.
 * [Maven](https://maven.apache.org/) - Dependency Management  
 * [Spring Boot](https://projects.spring.io/spring-boot/) - Web Framework 
 * [Hibernate](http://hibernate.org) - Framework
-* [JUnit] (http://junit.org) - Test
+
 
 
 
