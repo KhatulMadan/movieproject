@@ -14,7 +14,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "childrentvshows")
-public class ChildrenTvShows extends Movie {
+public class ChildrenTvShows extends AbstractMovie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -94,6 +94,19 @@ public class ChildrenTvShows extends Movie {
     public String getPoster() {
         return poster;
     }
+
+    /**
+     *  General setter method to set all the details of children TV show at one time.
+     * @param title
+     * @param runtime
+     * @param genre
+     * @param release_date
+     * @param written
+     * @param director
+     * @param cast
+     * @param description
+     * @param poster
+     */
 
     public void setDetails(String title,
                            int runtime,

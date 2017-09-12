@@ -8,7 +8,10 @@ import org.springframework.stereotype.Component;
 
 /**
  * Created by boris on 05.09.17.
+ *
+ * All downloaded movies are divided into 4 types declared in this class.
  */
+
 @Component
 public enum MovieType {
 

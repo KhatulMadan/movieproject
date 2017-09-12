@@ -6,12 +6,12 @@ import com.boris.movieproject.entity.*;
 /**
  * Created by boris on 31.08.17.
  *
- * Interface for service class responsible for performing Movie object operations.
+ * Interface for service class responsible for performing AbstractMovie object operations.
  */
 public interface DBService {
 
 
-    void add(Movie movie);
+    void add(AbstractMovie abstractMovie);
 
 
 }

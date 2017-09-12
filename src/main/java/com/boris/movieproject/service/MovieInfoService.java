@@ -1,7 +1,7 @@
 package com.boris.movieproject.service;
 
 import com.boris.movieproject.config.AppConfig;
-import com.boris.movieproject.entity.Movie;
+import com.boris.movieproject.entity.AbstractMovie;
 import com.boris.movieproject.factory.MovieFactory;
 import com.boris.movieproject.factory.MovieType;
 import com.google.gson.*;
@@ -18,24 +18,28 @@ import java.util.List;
 /**
  * Created by boris on 30.08.17.
  *
- * Service class fetching the data from MovieDataBase website
+ * Service class fetching the data from MovieDataBase website using MovieDataBase API and saving it to MySQL data base.
+ *
  */
+
 
 @Service
 @Component
 public class MovieInfoService {
 
-    
+
     @Autowired
     private DBService dbService;
-
 
     @Autowired
     private DownloadService downloadService;
 
+    // API Key provided by TheMovieDataBase.
 
     @Value("${API_KEY}")
     private String myAPI;
+
+    // Basic URLs used by TheMovieDataBase API to make queries.
 
     private final String basicURL = "https://api.themoviedb.org/3/search/movie?api_key=%s&query=%s";
     private final String detailsQueryURL = "https://api.themoviedb.org/3/movie/%s?api_key=%s";
@@ -45,12 +49,11 @@ public class MovieInfoService {
     private String details;
     private String credits;
 
-
-
     /**
+     * Search the basic information about a movie using its title.
+     * Fetch the id of the movie in TheMovieDataBase and save to variable ID.
+     * @param title of the movie to be processed.
      *
-     * @param title is the name of the movie that we want to get the details about;
-     * This method assigns variable ID;
      */
 
     private void setID(String title){
@@ -68,7 +71,6 @@ public class MovieInfoService {
         }
         String getURL=String.format(basicURL, myAPI, newTitle);
 
-        //
         System.out.println(getURL);
 
         RestTemplate restTemplate = new RestTemplate();
@@ -87,13 +89,14 @@ public class MovieInfoService {
         }
 
 
+
     }
 
 
     /**
-     * Method saves all movie details in variable details;
-     * @param ID is movie ID as integer;
-     *
+     * Get the general information about a movie.
+     * Save the received data as Json String to variable details.
+     * @param ID is movie's id in TheMovieDataBase.
      */
 
 
@@ -112,11 +115,10 @@ public class MovieInfoService {
     }
 
 
-
     /**
-     * Method saves all movie credits in variable credits;
-     * @param ID movie ID as Integer;
-     *
+     * Get the information about cast and crew of a movie.
+     * Save the received data as Json String to variable credits.
+     * @param ID is movie's id in TheMovieDataBase.
      */
 
     private void setCredits(int ID){
@@ -131,9 +133,9 @@ public class MovieInfoService {
     }
 
     /**
-     * Gets the runtime of the movie;
-     * @param details is json string with all the details;
-     * @return runtime of the movie as an integer;
+     * Helper method to get the runtime of a movie.
+     * @param details is JSon String with all general details.
+     * @return runtime of a movie as an Integer.
      */
 
    private int getRuntime(String details)
@@ -144,9 +146,9 @@ public class MovieInfoService {
    }
 
     /**
-     * Gets the release date of the movie;
-     * @param details is json string with all the details;
-     * @return release date of the movie as a string;
+     * Helper method to get the release date of a movie.
+     * @param details is JSon String with all general details.
+     * @return release date of a movie as a String.
      */
 
    private String getReleaseDate(String details)
@@ -168,9 +170,9 @@ public class MovieInfoService {
    }
 
     /**
-     * Gets the poster of the movie;
-     * @param details is json string with all the details;
-     * @return the link to the poster (jpg file) as a string;
+     * Helper method to get the backdrop (poster) path of a movie.
+     * @param details is JSon String with all general details.
+     * @return backdrop (poster) path as a String.
      */
 
 
@@ -194,9 +196,9 @@ public class MovieInfoService {
    }
 
     /**
-     * Gets the genre of the movie;
-     * @param details is json string with all the details;
-     * @return genre as a string;
+     * Helper method to get the genre of a movie.
+     * @param details is JSon String with all general details.
+     * @return genre as a String;
      */
 
    private String getGenre(String details)
@@ -209,9 +211,9 @@ public class MovieInfoService {
    }
 
     /**
-     * Gets the short description of the movie's plot;
-     * @param details is json string with all the details;
-     * @return the short description of the plot as a string;
+     * Helper method to get a short description (overview) of a movie's plot.
+     * @param details is JSon String with all general details.
+     * @return overview as a String.
      */
 
     private String getOverview(String details)
@@ -220,22 +222,22 @@ public class MovieInfoService {
         JsonObject detailsObj = new JsonParser().parse(details).getAsJsonObject();
         JsonElement overviewObj = detailsObj.get("overview");
 
-        if (overviewObj == null) {
-            overview = "no ";
+        if (overviewObj != null) {
+            overview = overviewObj.getAsString();
         }
 
         else
         {
-            overview = overviewObj.getAsString();
+            overview = "not available";
         }
 
-        return detailsObj.get("overview").getAsString();
+        return overview;
     }
 
     /**
-     * Gets the name of the director;
-     * @param credits is json string with credits details;
-     * @return the name of the director as a string;
+     * Helper method to get the director of a movie.
+     * @param credits is JSon String with movie credits (cast, crew).
+     * @return director's name as a String.
      */
 
 
@@ -262,9 +264,9 @@ public class MovieInfoService {
    }
 
     /**
-     * Gets the name of the writers (incl. novel authors, screenplay, etc)
-     * @param credits is json string with credit details;
-     * @return the names of the writers separated by "," as a string;
+     * Helper method to get the name of a movie's writers (incl. novel authors, screenplay, etc).
+     * @param credits is JSon String with movie credits (cast, crew).
+     * @return the writers' names separated by comma as a String.
      */
 
     private String getWriter(String credits) {
@@ -289,9 +291,9 @@ public class MovieInfoService {
     }
 
     /**
-     * Gets the name of the main actors;
-     * @param credits is json string with credits details;
-     * @return the names of three mains actors separated by "," as a string;
+     * Helper method to get movie's cast.
+     * @param credits is JSon String with movie credits (cast, crew).
+     * @return the names of three mains actors separated by comma as a String.
      */
 
     private String getCast(String credits){
@@ -315,27 +317,39 @@ public class MovieInfoService {
     }
 
     /**
-     * @param movie is an empty movie object.
-     * @param title is the title of the movie.
-     * @return movie with all the values set.
+     * Get all the needed details of the movie and sets it to an instance of an AbstractMovie object.
+     * @param abstractMovie is an empty instance of Abstract Movie object.
+     * @param title is the title of a movie.
+     * @return an instance of Abstract Movie object with all the values set.
      */
 
-   public Movie getFullDetails(Movie movie, String title)
+   public AbstractMovie getFullDetails(AbstractMovie abstractMovie, String title)
     {
         setID(title);
         setDetails(ID);
         setCredits(ID);
-        movie.setDetails(title,
+        abstractMovie.setDetails(title,
                 getRuntime(details), getGenre(details), getReleaseDate(details),
                 getWriter(credits), getDirector(credits), getCast(credits), getOverview(details), getBackdropPath(details));
-        return movie;
+        return abstractMovie;
 
     }
+
+    /**
+     * Process all the downloaded movie from a directory.
+     * Save all the details to MySQL data base.
+     * @param results is a list of movies in a directory.
+     * @param movieType is the type of downloaded movies in a directory
+     *                  (e.g. Children Movie, Movie, TV Show, Children TV Show).
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws IOException
+     */
 
     public void saveMovies(List<String> results, MovieType movieType) throws InstantiationException, IllegalAccessException, IOException {
 
         MovieFactory movieFactory = new MovieFactory();
-        Movie movie = movieFactory.getMovie(movieType);
+        AbstractMovie abstractMovie = movieFactory.getMovie(movieType);
         AnnotationConfigApplicationContext context =
                 new AnnotationConfigApplicationContext(AppConfig.class);
         dbService = context.getBean(DBService.class);
@@ -344,10 +358,10 @@ public class MovieInfoService {
         for (int i = 0; i<results.size(); i++) {
 
             String title = results.get(i);
-            movie = getFullDetails(movie, title);
-            String filepath = movie.getPoster();
+            abstractMovie = getFullDetails(abstractMovie, title);
+            String filepath = abstractMovie.getPoster();
             downloadService.downloadFile(filepath);
-            dbService.add(movie);
+            dbService.add(abstractMovie);
 
         }
 

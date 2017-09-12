@@ -1,5 +1,6 @@
 package com.boris.movieproject.service;
 
+
 import com.boris.movieproject.factory.MovieType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -21,9 +22,9 @@ public class CronManager {
     @Autowired
     private CronManager myCron;
 
-
     @Autowired
     private MovieInfoService movieInfoService;
+
 
     @Autowired
     private DirectoryHolder directories;
@@ -33,16 +34,13 @@ public class CronManager {
 
 
 
-
-
-
-
-
     /**
-     * The method that executes the scheduled task.
-     * All movies from the adjusted directory are processed in order to get the certain information and save it to DB.
-     * Also the backdrop for each is downloaded as .jpg file.
+     * Take the directories and process every movie one by one.
+     * Automatically repeat the task after certain period of time.
+     * (By default the task is executed every 5 minutes).
      * @throws IOException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
      */
 
 
@@ -54,7 +52,6 @@ public class CronManager {
             List<String> results = fileService.getMovies(d);
             MovieType movieType = MovieType.valueOf(d.toUpperCase());
             movieInfoService.saveMovies(results, movieType);
-
 
         }
 

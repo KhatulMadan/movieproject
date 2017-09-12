@@ -12,7 +12,7 @@ import java.net.URL;
 /**
  * Created by boris on 30.08.17.
  *
- * Service class to download backdrops as jpg files from MoviesDataBase web site.
+ * Service class to download backdrops (posters) as .jpg files from MoviesDataBase web site.
  */
 
 @Component
@@ -20,7 +20,7 @@ public class DownloadService {
 
     private static final int BUFFER_SIZE = 4096;
 
-    //permamnent link provided by MoviesDataBase website
+    //default link provided by MoviesDataBase website
 
     private static final String basicUrl = "https://image.tmdb.org/t/p/original";
 
@@ -29,6 +29,7 @@ public class DownloadService {
      * @param fileURL the part of the url that points to a certain jpg file;
      * @throws IOException
      */
+
     public static void downloadFile(String fileURL)
             throws IOException {
 
@@ -38,7 +39,7 @@ public class DownloadService {
         HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
         int responseCode = httpConn.getResponseCode();
 
-        // always check HTTP response code first
+        // check HTTP response code first
         if (responseCode == HttpURLConnection.HTTP_OK) {
             String fileName = "";
             String disposition = httpConn.getHeaderField("Content-Disposition");

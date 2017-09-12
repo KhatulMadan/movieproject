@@ -2,12 +2,15 @@ package com.boris.movieproject.app;
 
 /**
  * Created by boris on 30.08.17.
- * Application controller that reads request from the user
+ *
+ * Controller class to get requests from the user.
+ *
  */
 
 
 import com.boris.movieproject.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -44,9 +48,10 @@ public class AppController {
     @Autowired
     private ApplicationContext appContext;
 
+
     /**
-     * @param name is the name of the directory with downloaded movies as a string.
-     * The method adds directory to the list of directories to be processed.
+     * @param name is the name of the directory as a String that contains downloaded movies.
+     * The method adds directory to the list of directories (DirectoryHolder class) to be processed.
      */
 
     @RequestMapping("/directory")

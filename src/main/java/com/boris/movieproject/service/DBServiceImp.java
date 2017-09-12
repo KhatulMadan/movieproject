@@ -10,10 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Created by boris on 31.08.17.
  *
- * /**
- * Created by boris on 31.08.17.
- *
- * Service class responsible for performing Movie object operations.
+ * Service class responsible for performing AbstractMovie object operations.
  */
 
 
@@ -26,9 +23,9 @@ public class DBServiceImp implements DBService {
 
 
     @Override
-    public void add (Movie movie) {
+    public void add (AbstractMovie abstractMovie) {
 
-    myDao.add(movie);
+    myDao.add(abstractMovie);
 
 
     }

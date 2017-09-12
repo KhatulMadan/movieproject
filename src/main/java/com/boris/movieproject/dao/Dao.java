@@ -5,14 +5,19 @@ import com.boris.movieproject.entity.*;
 
 /**
  * Created by boris on 31.08.17.
- * DAO interface
  *
+ * DAO interface.
  */
 
 
 public interface Dao {
 
-  void add (Movie movie);
+  /**
+   * Add new AbstractMovie object to repository.
+   * @param abstractMovie is new AbstractMovie object to be added.
+   */
+
+  void add (AbstractMovie abstractMovie);
 
 
 }

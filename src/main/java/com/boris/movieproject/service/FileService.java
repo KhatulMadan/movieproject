@@ -12,7 +12,7 @@ import org.apache.commons.io.FilenameUtils;
 /**
  * Created by boris on 30.08.17.
  *
- * Service class providing the names of downloaded movie files.
+ * Service class providing the names of downloaded movies stored in a directory.
  */
 
 @Service
@@ -21,11 +21,11 @@ public class FileService {
 
 
     /**
-     * Gets the names of the movies in the current folder;
+     * Get the names of the movies in the current directory.
      *
-     * @param folderName is the name of the folder with movies;
-     * @return the name of all movies in the current folder as a list of strings;
-     * If this folderName doesn't denote an existing folder returns null;
+     * @param folderName is the name of directory with downloaded movies.
+     * @return the name of all movies in a current directory as a list of strings.
+     * If folderName doesn't denote an existing folder returns null;
      */
 
     public List<String> getMovies(String folderName) {

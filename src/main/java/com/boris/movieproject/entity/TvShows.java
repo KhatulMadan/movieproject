@@ -13,7 +13,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "tvshows")
-public class TvShows extends Movie {
+public class TvShows extends AbstractMovie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -90,6 +90,19 @@ public class TvShows extends Movie {
     public String getPoster() {
         return poster;
     }
+
+    /**
+     * General setter method to set all the details of a TV Show at one time.
+     * @param title
+     * @param runtime
+     * @param genre
+     * @param release_date
+     * @param written
+     * @param director
+     * @param cast
+     * @param description
+     * @param poster
+     */
 
     public void setDetails(String title,
                            int runtime,

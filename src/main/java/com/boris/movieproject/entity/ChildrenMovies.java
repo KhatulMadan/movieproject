@@ -21,7 +21,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "childrenmovies")
-public class ChildrenMovies extends Movie {
+public class ChildrenMovies extends AbstractMovie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -99,6 +99,18 @@ public class ChildrenMovies extends Movie {
     }
 
 
+    /**
+     * General setter method to set all the details of a children movie at one time.
+     * @param title
+     * @param runtime
+     * @param genre
+     * @param release_date
+     * @param written
+     * @param director
+     * @param cast
+     * @param description
+     * @param poster
+     */
 
     public void setDetails(String title,
                                     int runtime,

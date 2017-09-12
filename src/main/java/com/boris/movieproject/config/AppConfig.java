@@ -15,7 +15,9 @@ import java.util.Properties;
 
 /**
  * Created by boris on 31.08.17.
- * Spring configuration class.
+ *
+ * Spring configuration class incl. Hibernate properties.
+ * Instantiate ApplicationContext from a Java file using the Configuration annotation.
  *
  */
 
