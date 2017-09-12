@@ -34,8 +34,10 @@ Go to http://localhost:8191/directory?name= and provide directory.
 * [Java](http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html)  
 * [Maven](https://maven.apache.org/) - Dependency Management  
 * [Spring Boot](https://projects.spring.io/spring-boot/) - Web Framework 
-* [Hibernate](/http://hibernate.org) - Framework
+* [Hibernate](http://hibernate.org) - Framework
 * [JUnit] (http://junit.org/junit5/) - Test
+
+
 
 
 
